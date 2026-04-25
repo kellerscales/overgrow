@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>overgrow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --clr-bg:          #0d120e;
+      --clr-surface:     #111a12;
+      --clr-border:      #1e2e1f;
+      --clr-green:       #3a6b3c;
+      --clr-green-mid:   #4e8c50;
+      --clr-green-light: #72b874;
+      --clr-text:        #c9c4b8;
+      --clr-muted:       #6b6b60;
+      --clr-white:       #f4f1ec;
+
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--clr-bg);
+      color: var(--clr-text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .5;
+    }
+
+    /* Radial glow */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(58,107,60,.18) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: min(1120px, 90vw);
+      margin-inline: auto;
+    }
+
+    /* Main content centered */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 80px 0;
+    }
+
+    .content {
+      max-width: 520px;
+    }
+
+    /* Logo */
+    .logo {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--clr-white);
+      letter-spacing: -.01em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+    .logo-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--clr-green-light);
+      display: inline-block;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .5; transform: scale(.7); }
+    }
+
+    /* Tag */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--clr-green-light);
+      border: 1px solid rgba(114,184,116,.25);
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 28px;
+    }
+    .tag span { width: 5px; height: 5px; border-radius: 50%; background: var(--clr-green-light); }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 900;
+      color: var(--clr-white);
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      margin-bottom: 20px;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--clr-green-light);
+    }
+
+    p {
+      font-size: 1.05rem;
+      color: var(--clr-text);
+      font-weight: 300;
+      max-width: 420px;
+      margin-inline: auto;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--clr-border);
+      padding: 36px 0;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--clr-white);
+      letter-spacing: -.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-copy {
+      font-size: .8rem;
+      color: var(--clr-muted);
+      margin-top: 4px;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 16px;
+    }
+    .footer-social-link {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--clr-muted);
+      transition: color .2s, transform .2s;
+    }
+    .footer-social-link:hover {
+      color: var(--clr-green-light);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="content">
+
+      <div class="logo">
+        <span class="logo-dot"></span>
+        overgrow
+      </div>
+
+      <h1>Smarter Ads.<br /><em>Real Growth.</em></h1>
+
+      <p>
+        We're putting the finishing touches on something built for eCommerce brands ready to scale. An advertising agency that's creative-led, data-driven, and obsessed with your revenue.
+      </p>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">
+            <span class="logo-dot"></span>
+            overgrow
+          </div>
+          <!-- <p class="footer-copy">© 2025 Overgrow Agency. All rights reserved.</p> -->
+        </div>
+        <div class="footer-socials">
+          <!-- Instagram -->
+          <a href="#" class="footer-social-link" aria-label="Instagram">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
